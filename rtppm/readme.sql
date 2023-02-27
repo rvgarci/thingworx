@@ -1,0 +1,1 @@
+-- All tables will have 'uid' as primary key.

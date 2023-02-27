@@ -1,22 +1,17 @@
 USE thingworxapps
 
-SELECT 
-	eq.name as EquipamentName,
-    eq.displayname as EquipmentDisplayName,
-    eq.enabled as EquipamentEnabled,
-	et.name as EquipamentType,
---	eq.parentequipmentuid,
---	eq.uid,
---	pe.uid,
-	peaux.name as ParentEquipament,
-	peaux.equipmentlevel as ParentLevel
+SELECT
+	eq.name as EquipmentName,
+	ec.name as ConfigurationName,
+	ecl.value as ConfigurationValue,
+	eq.uid,
+	ecl.equipmentuid,
+	ec.uid,
+	ecl.equipmentconfigurationuid
+	--et.equipmentlevel
 FROM equipment eq
-INNER JOIN equipmenttype et on eq.equipmenttypeuid = et.uid
-INNER JOIN (SELECT
-	pe.name,
-	pe.uid,
-	pet.equipmentlevel
-FROM equipment pe
-INNER JOIN equipmenttype pet on pet.uid = pe.equipmenttypeuid) peaux on peaux.uid = eq.parentequipmentuid
+INNER JOIN equipmenttype et on et.uid = eq.equipmenttypeuid
+INNER JOIN equipmentconfigurationlink ecl on ecl.equipmentuid = eq.uid
+INNER JOIN equipmentconfiguration ec on ec.uid = ecl.equipmentconfigurationuid
 WHERE eq.enabled = 1
 ORDER BY et.equipmentlevel
