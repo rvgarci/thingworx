@@ -1,6 +1,5 @@
 USE thingworxapps
 
-USE thingworxapps
 
 SELECT
 	rt.name as ReasonTreeName,

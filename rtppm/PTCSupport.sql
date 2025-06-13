@@ -69,3 +69,21 @@ INSERT INTO transactionproduction (action, productioneventuid, retrycount, times
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 select * from wastefault;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DECLARE @EquipmentUidList NVARCHAR(MAX) = '309,320' -- CHANGE THIS
+DECLARE @TimeRangeList NVARCHAR(MAX)
+EXEC MnfgCommon_QuickTimeIntervalList_SP
+    @op_TimeRangeList = @TimeRangeList OUTPUT,
+    @p_QuickTimeIntervalUID = 1,
+    @p_EquipmentUIDList = @EquipmentUidList,
+    @p_IsRoundingDown = 0
+SELECT    [UID],
+        StartTime,
+        EndTime
+FROM      OPENJSON(@TimeRangeList, '$')
+WITH
+(
+    [UID]        BIGINT        '$.UID',
+    StartTime    DATETIME    '$.StartTime',
+    EndTime        DATETIME    '$.EndTime'
+)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
